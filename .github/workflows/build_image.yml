@@ -52,7 +52,7 @@ jobs:
       - name: Get vaultwarden version
         id: vaultwarden_version
         run: |
-          version=$(docker run --entrypoint /vaultwarden "${{ env.DOCKER_REGISTRY}}/${{ env.DOCKER_REPO }}:${{ github.run_number }}-dev" --version | grep -oE '\d+\.\d+\.\d+')
+          version=$(docker run --entrypoint /vaultwarden "${{ env.DOCKER_REGISTRY}}/${{ env.DOCKER_REPO }}:${{ github.run_number }}-dev" --version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
           echo "version=$version" >> $GITHUB_OUTPUT          
 
       - name: Build and push
