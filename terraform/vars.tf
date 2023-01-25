@@ -3,7 +3,7 @@ variable "name" {
   description = "Name to use for resources, must be globally unique. If unset a unique name will be generated prefixed with 'vaultwarden-'."
 }
 
-varialbe "run_timeout" {
+variable "run_timeout" {
   default     = 600
   description = "Amount of time app runs before sleeping"
 }
