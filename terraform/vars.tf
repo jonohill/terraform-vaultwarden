@@ -13,7 +13,11 @@ variable "env" {
 }
 
 variable "image" {
-  default = "ghcr.io/jonohill/vaultwarden:1.27.0"
+  default = "ghcr.io/jonohill/vaultwarden"
+}
+
+variable "image_tag" {
+  default = "1.27.0"
 }
 
 variable "storage_gb" {

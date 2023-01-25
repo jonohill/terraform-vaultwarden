@@ -1,6 +1,13 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:base"
-  ]
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": ["config:base"],
+
+    "regexManagers": [
+        {
+            "fileMatch": ["^terraform/vars.tf$"],
+            "matchStrings": ["\"image_tag\"[^}]+default\\s+=\\s+\"(?<currentValue>.*?)\""],
+            "depNameTemplate": "ghcr.io/jonohill/vaultwarden",
+            "datasourceTemplate": "docker"
+        }
+    ]
 }

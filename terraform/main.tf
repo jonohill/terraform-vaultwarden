@@ -23,8 +23,6 @@ resource "random_string" "name_suffix" {
 }
 
 locals {
-  # TODO renovate
-  image       = "ghcr.io/jonohill/terraform-vaultwarden:1.27.0"
   has_storage = var.storage_gb > 0
   name        = var.name == "" ? "vaultwarden-${random_string.name_suffix.result}" : var.name
 }
@@ -76,7 +74,7 @@ resource "fly_machine" "this" {
   region = var.fly_region
   name   = "test"
 
-  image    = local.image
+  image    = "${var.image}:${var.image_tag}"
   cpus     = var.cpus
   memorymb = var.memorymb
 
