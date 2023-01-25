@@ -10,7 +10,7 @@ on:
 
 env:
   DOCKER_REGISTRY: ghcr.io/jonohill
-  DOCKER_REPO: fly-vaultwarden
+  DOCKER_REPO: terraform-vaultwarden
 
 jobs:
 
