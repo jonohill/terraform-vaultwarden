@@ -44,7 +44,7 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          push: true
+          push: ${{ github.actor != 'renovate[bot]' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max          
           tags: "${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_REPO }}:${{ github.run_number }}-dev"
