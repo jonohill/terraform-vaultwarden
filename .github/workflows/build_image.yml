@@ -52,7 +52,7 @@ jobs:
           echo "version=$version" >> $GITHUB_OUTPUT          
 
       - name: Build and push
-        id: docker_build
+        id: docker_build_push
         uses: docker/build-push-action@v3
         with:
           context: .
