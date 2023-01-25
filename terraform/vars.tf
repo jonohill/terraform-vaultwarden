@@ -13,7 +13,7 @@ variable "env" {
 }
 
 variable "image" {
-  default = "ghcr.io/jonohill/vaultwarden"
+  default = "ghcr.io/jonohill/terraform-vaultwarden"
 }
 
 variable "image_tag" {

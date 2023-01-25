@@ -6,7 +6,7 @@
         {
             "fileMatch": ["^terraform/vars.tf$"],
             "matchStrings": ["\"image_tag\"[^}]+default\\s+=\\s+\"(?<currentValue>.*?)\""],
-            "depNameTemplate": "ghcr.io/jonohill/vaultwarden",
+            "depNameTemplate": "ghcr.io/jonohill/terraform-vaultwarden",
             "datasourceTemplate": "docker"
         }
     ]
