@@ -13,11 +13,11 @@ timeout() {
     if [ -n "$timeout_pid" ]; then
         kill -s SIGTERM "$timeout_pid"
     fi
-    (sleep "$RUN_TIMEOUT" && echo "No output for $RUN_TIMEOUT seconds, exiting" && kill -s SIGTERM "$(< /tmp/vaultwarden.pid)") &
+    (sleep "$RUN_TIMEOUT" && echo "No output for $RUN_TIMEOUT seconds, exiting" && kill -s SIGTERM "$(cat /tmp/vaultwarden.pid)") &
     timeout_pid=$!
 }
 
 while read -r line; do
     echo "$line"
     timeout
-done < <(/vaultwarden "$@" & echo "$!" >/tmp/vaultwarden.pid; wait "$!")
+done < <(/vaultwarden "$@" & echo "$!" >/tmp/vaultwarden.pid; wait "$!" || true)
