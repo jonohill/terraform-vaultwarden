@@ -16,11 +16,13 @@ data "aws_region" "current" {}
 resource "random_string" "name_suffix" {
   length  = 7
   special = false
+  upper   = false
 }
 
 locals {
   has_storage = var.storage_gb > 0
   name        = var.name == "" ? "vaultwarden-${random_string.name_suffix.result}" : var.name
+  url         = "https://${fly_app.this.name}.fly.dev"
 }
 
 # SES
@@ -52,6 +54,11 @@ resource "aws_iam_user_policy_attachment" "ses_sender" {
   policy_arn = aws_iam_policy.ses_sender.arn
 }
 
+resource "tls_private_key" "rsa_key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
 resource "fly_app" "this" {
   name = local.name
 }
@@ -68,11 +75,11 @@ resource "fly_volume" "this" {
 resource "fly_machine" "this" {
   app    = fly_app.this.name
   region = var.fly_region
-  name   = "test"
 
   image    = "${var.image}:${var.image_tag}"
   cpus     = var.cpus
   memorymb = var.memorymb
+  cputype  = var.cputype
 
   env = merge(
     local.has_storage ? {} : {
@@ -90,13 +97,6 @@ resource "fly_machine" "this" {
       # Default to using system CA certs for Postgres
       PGSSLROOTCERT = "/etc/ssl/certs/ca-certificates.crt",
 
-      # Disable things that require filesystem writes
-      DATABASE_URL          = "set_me://",
-      SENDS_ALLOWED         = "false",
-      ICON_SERVICE          = "bitwarden",
-      ICON_REDIRECT_CODE    = "301",
-      USER_ATTACHMENT_LIMIT = "0",
-
       # Written to file by startup script
       RSA_KEY     = tls_private_key.rsa_key.private_key_pem,
       RSA_KEY_PUB = tls_private_key.rsa_key.public_key_pem,
@@ -106,6 +106,8 @@ resource "fly_machine" "this" {
       SMTP_PORT     = "587",
       SMTP_USERNAME = aws_iam_access_key.smtp_user.id,
       SMTP_PASSWORD = aws_iam_access_key.smtp_user.ses_smtp_password_v4,
+
+      DOMAIN = lookup(var.env, "DOMAIN", local.url),
     },
     var.env
   )
@@ -113,6 +115,7 @@ resource "fly_machine" "this" {
   services = [
     {
       internal_port = 80,
+      protocol      = "tcp",
       ports = [
         {
           port     = 443
@@ -121,4 +124,18 @@ resource "fly_machine" "this" {
       ]
     }
   ]
+
+  mounts = [
+    for v in fly_volume.this : {
+      volume = v.id
+      path   = "/data"
+    }
+  ]
+}
+
+resource "fly_ip" "this" {
+  for_each = toset(["v4", "v6"])
+
+  app  = fly_app.this.name
+  type = each.key
 }

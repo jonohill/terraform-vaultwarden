@@ -4,7 +4,7 @@ variable "name" {
 }
 
 variable "run_timeout" {
-  default     = 600
+  default     = 300
   description = "Amount of time app runs before sleeping"
 }
 
@@ -27,7 +27,6 @@ variable "storage_gb" {
 
 variable "fly_region" {
   type    = string
-  default = "syd"
 }
 
 variable "cpus" {
@@ -36,4 +35,8 @@ variable "cpus" {
 
 variable "memorymb" {
   default = 256
+}
+
+variable "cputype" {
+  default = "shared"
 }

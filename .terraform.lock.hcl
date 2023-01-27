@@ -24,8 +24,7 @@ provider "registry.terraform.io/fly-apps/fly" {
 }
 
 provider "registry.terraform.io/hashicorp/aws" {
-  version     = "4.51.0"
-  constraints = ">= 4.9.0, >= 4.22.0"
+  version = "4.51.0"
   hashes = [
     "h1:gcJ7Wl7NSFTacEekzzkggUTCn9KMsGr8TH2mXrj9EJ4=",
     "zh:10aebfd8f22f7a69a2fcfcf35cb17ebbc0966ac8e822a9a0e1c843e429389de7",
