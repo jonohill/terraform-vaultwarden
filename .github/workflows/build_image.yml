@@ -40,7 +40,7 @@ jobs:
 
       - name: (Pre) build image
         id: docker_build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           platforms: linux/amd64,linux/arm64
@@ -58,7 +58,7 @@ jobs:
 
       - name: Build and push
         id: docker_build_push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         if: ${{ github.actor != 'renovate[bot]' }}
         with:
           context: .
