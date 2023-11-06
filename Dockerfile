@@ -1,4 +1,4 @@
-FROM vaultwarden/server:1.29.2-alpine
+FROM vaultwarden/server:1.30.0-alpine
 
 RUN apk add --no-cache bash
 
